@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Electricity Consumption Analysis</title>
+  <meta name="description" content="Analysis of Electricity Consumption in India">
+
+  <link href="{{ url_for('static', filename='assets/img/favicon.png') }}" rel="icon">
+  <link href="{{ url_for('static', filename='assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <link href="{{ url_for('static', filename='assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='assets/vendor/aos/aos.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+
+  <link href="{{ url_for('static', filename='assets/css/main.css') }}" rel="stylesheet">
+
+  <style>
+    /* PLEASANT BACKGROUND FOR THE WHOLE PAGE */
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      background-attachment: fixed; /* Keeps the gradient fixed while scrolling */
+    }
+
+    /* Transparent Sections to show the pleasant background */
+    .section, .light-background {
+      background-color: rgba(255, 255, 255, 0.85); /* Slight transparency */
+      backdrop-filter: blur(5px); /* Modern glass effect */
+      margin: 20px;
+      border-radius: 15px;
+    }
+
+    /* Header Styles */
+    #header {
+      background: #fff;
+      box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.05);
+    }
+    .logo h1 {
+      font-size: 24px;
+      margin: 0;
+      font-weight: 600;
+      color: #37517e;
+      font-family: "Poppins", sans-serif;
+    }
+    .navmenu a {
+      color: #37517e;
+      font-weight: 500;
+      font-size: 15px;
+    }
+    .navmenu a:hover, .navmenu a.active {
+      color: #47b2e4;
+    }
+
+    /* Hero Section */
+    #hero {
+      width: 100%;
+      background: transparent; /* Changed to transparent for gradient visibility */
+      padding: 100px 0 60px 0;
+      text-align: center;
+    }
+    #hero h1 {
+      margin: 0 0 20px 0;
+      font-size: 42px;
+      font-weight: 700;
+      color: #37517e;
+    }
+    #hero p {
+      color: #444;
+      margin-bottom: 30px;
+      font-size: 18px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #hero .btn-get-started {
+      font-family: "Jost", sans-serif;
+      font-weight: 500;
+      font-size: 16px;
+      padding: 12px 40px;
+      border-radius: 5px;
+      color: #fff;
+      background: #5871fa;
+      text-decoration: none;
+    }
+    #hero .btn-get-started:hover {
+      background: #3b5bdb;
+    }
+    #hero img {
+      margin-top: 50px;
+      max-width: 80%;
+      height: auto;
+    }
+
+    /* Conclusion Section Styles */
+    .conclusion-item {
+      margin-bottom: 40px;
+      background: #fff;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .conclusion-item img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    .conclusion-item h3 {
+      font-weight: 700;
+      font-size: 22px;
+      color: #37517e;
+      margin-bottom: 15px;
+    }
+    .conclusion-item ul {
+      list-style: none;
+      padding: 0;
+    }
+    .conclusion-item ul li {
+      padding-bottom: 10px;
+      display: flex;
+      align-items: flex-start;
+    }
+    .conclusion-item ul li i {
+      font-size: 20px;
+      padding-right: 4px;
+      color: #47b2e4;
+    }
+
+    /* --- NEW FOOTER / CONTACT SECTION STYLES --- */
+    #footer-contact {
+      background-color: #0f172a; /* Dark Navy Background */
+      color: #ffffff;
+      padding: 60px 0 20px 0;
+      margin: 0; /* Full width */
+      border-radius: 0; /* Remove rounded corners for footer */
+    }
+
+    #footer-contact h3 {
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    #footer-contact p, #footer-contact li {
+      color: #d1d5db; /* Light gray text */
+    }
+    
+    #footer-contact .info-item {
+      margin-bottom: 30px;
+    }
+    
+    #footer-contact i {
+      color: #38bdf8; /* Light blue icon */
+      font-size: 20px;
+      margin-right: 10px;
+    }
+
+    /* Form Styles in Dark Footer */
+    #footer-contact .form-control {
+      background-color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      padding: 12px;
+      margin-bottom: 15px;
+    }
+    
+    #footer-contact button[type="submit"] {
+      background: #2563eb;
+      border: 0;
+      padding: 12px 30px;
+      color: #fff;
+      transition: 0.4s;
+      border-radius: 5px;
+      font-weight: 600;
+    }
+    
+    #footer-contact button[type="submit"]:hover {
+      background: #1d4ed8;
+    }
+
+    /* Copyright Strip */
+    .copyright-strip {
+      border-top: 1px solid #334155;
+      padding-top: 20px;
+      margin-top: 40px;
+      text-align: center;
+      color: #94a3b8;
+      font-size: 14px;
+    }
+    .copyright-strip a {
+      color: #38bdf8;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body class="index-page">
+
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center">
+      <a href="/" class="logo d-flex align-items-center me-auto">
+      </a>
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="#hero" class="active">Home</a></li>
+          <li><a href="#dashboard">Dashboard</a></li>
+          <li><a href="#story">Story</a></li>
+          <li><a href="#visualizations">Visualizations</a></li>
+          <li><a href="#conclusion">Conclusion</a></li>
+          <li><a href="#footer-contact">Contact</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <section id="hero" class="hero">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-12" data-aos="fade-up" data-aos-delay="100">
+            <h1>Analysis on Electricity<br>Consumption In India</h1>
+            <p>India is the third largest producer of electricity in the world. During the fiscal year (FY) 2019–20, the total electricity generation in the country was 1,598 TWh, of which 1,383.5 TWh generated by utilities. The gross electricity consumption per capita in FY2019 was 1,208 kWh.</p>
+            <div class="d-flex justify-content-center">
+              <a href="#dashboard" class="btn-get-started">Get Started</a>
+            </div>
+            <img src="{{ url_for('static', filename='assets/img/hero-img.png') }}" class="img-fluid animated" alt="Electricity Grid Diagram">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="dashboard" class="services section">
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Dashboard</h2>
+      </div>
+      <div class="container">
+        <div class='tableauPlaceholder' id='viz1770723371656' style='position: relative'>
+          <noscript><a href='#'><img alt='Dashboard 1 ' src='https://public.tableau.com/static/images/Da/Dashboard1_17707219017480/Dashboard1/1_rss.png' style='border: none' /></a></noscript>
+          <object class='tableauViz' style='display:none;'>
+            <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
+            <param name='embed_code_version' value='3' />
+            <param name='site_root' value='' />
+            <param name='name' value='Dashboard1_17707219017480/Dashboard1' />
+            <param name='tabs' value='no' />
+            <param name='toolbar' value='yes' />
+            <param name='static_image' value='https://public.tableau.com/static/images/Da/Dashboard1_17707219017480/Dashboard1/1.png' />
+            <param name='animate_transition' value='yes' />
+            <param name='display_static_image' value='yes' />
+            <param name='display_spinner' value='yes' />
+            <param name='display_overlay' value='yes' />
+            <param name='display_count' value='yes' />
+            <param name='language' value='en-US' />
+          </object>
+        </div>
+        <script type='text/javascript'>
+          var divElement = document.getElementById('viz1770723371656');
+          var vizElement = divElement.getElementsByTagName('object')[0];
+          if (divElement.offsetWidth > 800) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else if (divElement.offsetWidth > 500) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else { vizElement.style.width='100%';vizElement.style.height='1527px';}
+          var scriptElement = document.createElement('script');
+          scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+          vizElement.parentNode.insertBefore(scriptElement, vizElement);
+        </script>
+      </div>
+    </section>
+
+    <section id="story" class="portfolio section">
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Story</h2>
+        <p>Insights derived from the data analysis.</p>
+      </div>
+      <div class="container">
+        <div class='tableauPlaceholder' id='viz1770724357430' style='position: relative'>
+          <noscript><a href='#'><img alt='Story on Electricity Consumption in India ' src='https://public.tableau.com/static/images/st/story1_17707215482580/StoryonElectricityConsumptioninIndia/1_rss.png' style='border: none' /></a></noscript>
+          <object class='tableauViz' style='display:none;'>
+            <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
+            <param name='embed_code_version' value='3' />
+            <param name='site_root' value='' />
+            <param name='name' value='story1_17707215482580/StoryonElectricityConsumptioninIndia' />
+            <param name='tabs' value='no' />
+            <param name='toolbar' value='yes' />
+            <param name='static_image' value='https://public.tableau.com/static/images/st/story1_17707215482580/StoryonElectricityConsumptioninIndia/1.png' />
+            <param name='animate_transition' value='yes' />
+            <param name='display_static_image' value='yes' />
+            <param name='display_spinner' value='yes' />
+            <param name='display_overlay' value='yes' />
+            <param name='display_count' value='yes' />
+            <param name='language' value='en-US' />
+          </object>
+        </div>
+        <script type='text/javascript'>
+          var divElement = document.getElementById('viz1770724357430');
+          var vizElement = divElement.getElementsByTagName('object')[0];
+          vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';
+          var scriptElement = document.createElement('script');
+          scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+          vizElement.parentNode.insertBefore(scriptElement, vizElement);
+        </script>
+      </div>
+    </section>
+
+    <section id="visualizations" class="portfolio section">
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Visualizations</h2>
+        <p>Key charts and data representations.</p>
+      </div>
+
+      <div class="container">
+        <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+
+          <div class="col-lg-4 col-md-6 portfolio-item">
+            <img src="{{ url_for('static', filename='assets/img/portfolio/p1.jpg') }}" class="img-fluid" alt="Image 1">
+            <div class="portfolio-info">
+              <h4>Image 1</h4>
+              <a href="{{ url_for('static', filename='assets/img/portfolio/p1.jpg') }}" title="Image 1" data-gallery="portfolio-gallery" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item">
+            <img src="{{ url_for('static', filename='assets/img/portfolio/p2.jpg') }}" class="img-fluid" alt="Image 2">
+            <div class="portfolio-info">
+              <h4>Image 2</h4>
+              <a href="{{ url_for('static', filename='assets/img/portfolio/p2.jpg') }}" title="Image 2" data-gallery="portfolio-gallery" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item">
+            <img src="{{ url_for('static', filename='assets/img/portfolio/p3.jpg') }}" class="img-fluid" alt="Image 3">
+            <div class="portfolio-info">
+              <h4>Image 3</h4>
+              <a href="{{ url_for('static', filename='assets/img/portfolio/p3.jpg') }}" title="Image 3" data-gallery="portfolio-gallery" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item">
+            <img src="{{ url_for('static', filename='assets/img/portfolio/p5.jpg') }}" class="img-fluid" alt="Image 4">
+            <div class="portfolio-info">
+              <h4>Image 4</h4>
+              <a href="{{ url_for('static', filename='assets/img/portfolio/p5.jpg') }}" title="Image 4" data-gallery="portfolio-gallery" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item">
+            <img src="{{ url_for('static', filename='assets/img/portfolio/p4.jpg') }}" class="img-fluid" alt="Image 5">
+            <div class="portfolio-info">
+              <h4>Image 5</h4>
+              <a href="{{ url_for('static', filename='assets/img/portfolio/p4.jpg') }}" title="Image 5" data-gallery="portfolio-gallery" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item">
+            <img src="{{ url_for('static', filename='assets/img/portfolio/p6.jpg') }}" class="img-fluid" alt="Image 6">
+            <div class="portfolio-info">
+              <h4>Image 6</h4>
+              <a href="{{ url_for('static', filename='assets/img/portfolio/p6.jpg') }}" title="Image 6" data-gallery="portfolio-gallery" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="conclusion" class="section">
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Conclusion</h2>
+        <p>Summary of analysis findings.</p>
+      </div>
+
+      <div class="container">
+        
+        <div class="row conclusion-item" data-aos="fade-up" data-aos-delay="100">
+          <div class="col-lg-5">
+            <img src="{{ url_for('static', filename='assets/img/img1.jpg') }}" alt="Stats" class="img-fluid">
+          </div>
+          <div class="col-lg-7 d-flex flex-column justify-content-center">
+            <h3>Electricity Consumption Stats.</h3>
+            <ul>
+              <li><i class="bi bi-check-circle"></i> Maharashtra is the Highest Electricity consumption user of India.</li>
+              <li><i class="bi bi-check-circle"></i> Gujarat is the Second Highest Electricity consumption user of India.</li>
+              <li><i class="bi bi-check-circle"></i> Sikkim is the Lowest Electricity Consumption user of India.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="row conclusion-item" data-aos="fade-up" data-aos-delay="200">
+          <div class="col-lg-5">
+            <img src="{{ url_for('static', filename='assets/img/img2.jpg') }}" alt="Lockdown Stats" class="img-fluid">
+          </div>
+          <div class="col-lg-7 d-flex flex-column justify-content-center">
+            <h3>Electricity Consumption before and during Lockdown in India</h3>
+            <p>Electricity consumption was more in 2019 in month of March-June before Lockdown.</p>
+            <p>Electricity Consumption was less in 2020 in month of March-June during the Lockdown.</p>
+          </div>
+        </div>
+
+        <div class="row conclusion-item" data-aos="fade-up" data-aos-delay="300">
+          <div class="col-lg-5">
+            <img src="{{ url_for('static', filename='assets/img/img3.jpg') }}" alt="Quarter Stats" class="img-fluid">
+          </div>
+          <div class="col-lg-7 d-flex flex-column justify-content-center">
+            <h3>Electricity Consumption in Quarters</h3>
+            <ul>
+              <li><i class="bi bi-check-circle"></i> Electricity Consumption in 2019 for Quarter 3 was Highest.</li>
+              <li><i class="bi bi-check-circle"></i> Electricity Consumption in 2019 for Quarter 1 was Lowest.</li>
+              <li><i class="bi bi-check-circle"></i> Electricity Consumption in 2020 for Quarter 3 was Lowest.</li>
+              <li><i class="bi bi-check-circle"></i> Electricity Consumption in 2020 for Quarter 1 was Highest.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="row conclusion-item" data-aos="fade-up" data-aos-delay="400">
+          <div class="col-lg-5">
+            <img src="{{ url_for('static', filename='assets/img/img5.jpg') }}" alt="Region Stats" class="img-fluid">
+          </div>
+          <div class="col-lg-7 d-flex flex-column justify-content-center">
+            <h3>Electricity Consumption in Regions</h3>
+            <ul>
+              <li><i class="bi bi-check-circle"></i> Total Electricity consumption in Western Region is Highest.</li>
+              <li><i class="bi bi-check-circle"></i> Total Electricity consumption in North Eastern Region is Lowest.</li>
+              <li><i class="bi bi-check-circle"></i> Electricity Consumption in 2020 for Quarter 3 was Lowest.</li>
+              <li><i class="bi bi-check-circle"></i> Electricity Consumption in 2020 for Quarter 1 was Highest.</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer id="footer-contact">
+    <div class="container">
+      <div class="row">
+        
+        <div class="col-lg-6" data-aos="fade-right">
+          <h3>Get in Touch</h3>
+          <form action="forms/contact.php" method="post" class="php-email-form">
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <input type="text" name="name" class="form-control" id="name" placeholder="Name" required>
+              </div>
+              <div class="col-md-6 form-group">
+                <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+            </div>
+            <div class="form-group">
+              <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
+            </div>
+            <div class="text-start">
+              <button type="submit">Send Message</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="col-lg-5 offset-lg-1" data-aos="fade-left">
+          
+          <div class="info-item">
+            <h3>Our Address</h3>
+            <p><i class="bi bi-geo-alt-fill"></i> SmartBridge</p>
+            <p style="padding-left: 35px;">Hyderabad, Andhra Pradesh, India</p>
+          </div>
+
+          <div class="info-item">
+            <h3>Call Us</h3>
+            <p><i class="bi bi-telephone-fill"></i> +11 1234 1234</p>
+            <p style="padding-left: 35px;">+11 4321 4321</p>
+          </div>
+
+          <div class="info-item">
+            <h3>Email Us</h3>
+            <p><i class="bi bi-envelope-fill"></i> info@smartbridge.com</p>
+            <p style="padding-left: 35px;">contact@smartbridge.com</p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="copyright-strip">
+        <p>&copy; Copyright <strong>SmartBridge</strong>. All Rights Reserved.</p>
+        <p>Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a></p>
+      </div>
+
+    </div>
+  </footer>
+
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <div id="preloader"></div>
+
+  <script src="{{ url_for('static', filename='assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/vendor/php-email-form/validate.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/vendor/aos/aos.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/vendor/waypoints/noframework.waypoints.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/vendor/imagesloaded/imagesloaded.pkgd.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+
+</body>
+</html>
